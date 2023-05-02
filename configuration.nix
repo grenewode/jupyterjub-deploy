@@ -11,7 +11,7 @@
 
   system.autoUpgrade = {
     enable = true;
-    flake = "";
+    flake = "github:grenewode/jupyterhub-deploy";
     allowReboot = true;
     rebootWindow = {
       lower = "01:00";
