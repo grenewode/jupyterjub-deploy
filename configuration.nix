@@ -4,10 +4,7 @@
 
   nixpkgs.hostPlatform = "x86_64-linux";
 
-  networking = {
-    hostName = "jupyter";
-    domain = "intra.lair.onl";
-  };
+  networking = { domain = "intra.lair.onl"; };
 
   system.autoUpgrade = {
     enable = true;
@@ -19,7 +16,13 @@
     };
   };
 
-  proxmoxLXC = { manageNetwork = true; };
+  proxmoxLXC = {
+    privileged = false;
+    manageNetwork = false;
+    manageHostName = false;
+  };
+
+  services.cloud-init.network.enable = true;
 
   services.jupyterhub = {
     enable = true;
