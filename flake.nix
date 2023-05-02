@@ -1,6 +1,8 @@
 {
   description = "A very basic flake";
 
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+
   inputs.nixos-generators = {
     url = "github:nix-community/nixos-generators";
     inputs.nixpkgs.follows = "nixpkgs";

@@ -2,6 +2,8 @@
 
   imports = [ (modulesPath + "/virtualisation/proxmox-lxc.nix") ];
 
+  nixpkgs.hostPlatform = "x86_64-linux";
+
   networking = {
     hostName = "jupyter";
     domain = "intra.lair.onl";
