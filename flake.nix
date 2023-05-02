@@ -10,7 +10,7 @@
     nixosConfigurations.default = nixpkgs.lib.nixosSystem {
       modules = [ ./configuration.nix ];
 
-      specialArgs = { inherit self };
+      specialArgs = { inherit self; };
     };
 
     packages.x86_64-linux = {
