@@ -44,6 +44,8 @@ in
     };
   };
 
+  environment.systemPackages = [ (python3.withPackages (p: with p; [ jupyterhub jupyterlab ])) ];
+
   services.jupyterhub = {
     enable = true;
 

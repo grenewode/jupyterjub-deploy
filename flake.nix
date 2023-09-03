@@ -30,7 +30,7 @@
         profiles.system = {
           user = "root";
           sshUser = "root";
-          path = deploy-rs.lib.${system}.activate.nixos config;
+          path = deploy-rs.lib.${system}.activate.nixos self.nixosConfigurations.default;
         };
       };
 
@@ -40,8 +40,6 @@
     } // (flake-utils.lib.eachSystem [ system ] (localSystem:
       let
         pkgs = import nixpkgs { inherit localSystem; };
-
-
         inherit (pkgs) mkShell deploy-rs;
       in
       {
@@ -58,7 +56,7 @@
 
             format = "proxmox-lxc";
           }).override {
-            fileName = "nixos-${config.stateVersion}-jupyterhub_${self.lastModifiedDate}_amd64";
+            fileName = "nixos-${config.system.stateVersion}-jupyterhub_${self.lastModifiedDate}_amd64";
           };
       }));
 }
