@@ -1,0 +1,11 @@
+SSL_CERTS_DIR="/tmp/var/ssl"
+if [[ ! -d "$SSL_CERTS_DIR" ]];
+then
+    mkdir -p "$SSL_CERTS_DIR"
+    /nix/store/j7kaa5ja1998wjbnj8rjks7d3574ppy9-openssl-3.0.8-bin/bin/openssl req \
+                           -newkey rsa:2048 -nodes -keyout "$SSL_CERTS_DIR/jupyter.intra.lair.onl.key" \
+                           -x509 -days 365 -out "$SSL_CERTS_DIR/jupyter.intra.lair.onl.crt" \
+			   -subj "/CN=jupyter.intra.lair.onl"
+
+    # chown ngnix:nginx -R $SSL_CERTS_DIR
+fi
