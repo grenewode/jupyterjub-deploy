@@ -3,9 +3,9 @@ let
   inherit (lib) mkIf;
   inherit (config.services) jupyterhub nginx;
   inherit (config) networking;
-  inherit (pkgs) openssl python312 nodejs symlinkJoin;
+  inherit (pkgs) openssl python311 nodejs symlinkJoin;
 
-  python3 = python312;
+  python3 = python311;
 
   pythonEnv = python3.withPackages ({ pipx, pip, ... }: [ pipx pip ]);
 in

@@ -1,7 +1,7 @@
 {
   description = "A very basic flake";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs";
 
   inputs.nixos-generators = {
     url = "github:nix-community/nixos-generators";
@@ -13,6 +13,10 @@
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
   outputs = { self, nixpkgs, nixos-generators, deploy-rs, flake-utils }:
+    let
+      inherit (self.nixosConfigurations.default) config;
+      inherit (config.nixpkgs.hostPlatform) system;
+    in
     {
       nixosConfigurations.default = nixpkgs.lib.nixosSystem {
         modules = [ ./configuration.nix ];
@@ -26,16 +30,18 @@
         profiles.system = {
           user = "root";
           sshUser = "root";
-          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.default;
+          path = deploy-rs.lib.${system}.activate.nixos config;
         };
       };
 
       checks =
         builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy)
           deploy-rs.lib;
-    } // (flake-utils.lib.eachSystem [ self.nixosConfigurations.default.config.nixpkgs.hostPlatform.system] (localSystem:
+    } // (flake-utils.lib.eachSystem [ system ] (localSystem:
       let
         pkgs = import nixpkgs { inherit localSystem; };
+
+
         inherit (pkgs) mkShell deploy-rs;
       in
       {
@@ -52,7 +58,7 @@
 
             format = "proxmox-lxc";
           }).override {
-            fileName = "nixos-23.05-jupyterhub_${self.lastModifiedDate}_amd64";
+            fileName = "nixos-${config.stateVersion}-jupyterhub_${self.lastModifiedDate}_amd64";
           };
       }));
 }
